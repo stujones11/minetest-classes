@@ -71,9 +71,11 @@ else
 end
 classes:load()
 
+minetest.register_privilege("class", "Player can change class.")
+
 minetest.register_on_chat_message(function(name, message)
 	local args = string.split(message, " ", 2)
-    if args[1] == "/class" then
+	if args[1] == "/class" then
 		if not args[2] then
 			minetest.chat_send_player(name, "Current character class: "..classes.class[name])
 			return true
@@ -90,13 +92,14 @@ minetest.register_on_chat_message(function(name, message)
 			minetest.chat_send_player(name, "Invalid class '"..args[2].."', choose from:"..valid)
 			return true
 		end
+		if classes.class[name] == args[2] then
+			return true
+		end
 		classes.class[name] = args[2]
 		classes:save()
 		local player = minetest.env:get_player_by_name(name)
-		if player then
-			classes:update_character_mesh(player)
-			return true
-		end
+		classes:update_character_mesh(player)
+		return true
 	end
 end)
 
