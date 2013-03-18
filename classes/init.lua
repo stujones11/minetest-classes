@@ -73,35 +73,35 @@ classes:load()
 
 minetest.register_privilege("class", "Player can change class.")
 
-minetest.register_on_chat_message(function(name, message)
-	local args = string.split(message, " ", 2)
-	if args[1] == "/class" then
-		if not args[2] then
+minetest.register_chatcommand("class", {
+	params = "[class]",
+	description = "Change or view character class.",
+	func = function(name, param)
+		if param == "" then
 			minetest.chat_send_player(name, "Current character class: "..classes.class[name])
-			return true
+			return
 		end
 		if not minetest.check_player_privs(name, {class=true}) then
 			minetest.chat_send_player(name, "Changing class requires the 'class' privilege!")
-			return true
+			return
 		end
-		if not classes.mesh[args[2]] then
+		if not classes.mesh[param] then
 			local valid = ""
 			for k,_ in pairs(classes.mesh) do
 				valid = valid.." "..k
 			end
-			minetest.chat_send_player(name, "Invalid class '"..args[2].."', choose from:"..valid)
-			return true
+			minetest.chat_send_player(name, "Invalid class '"..param.."', choose from:"..valid)
+			return 
 		end
-		if classes.class[name] == args[2] then
-			return true
+		if classes.class[name] == param then
+			return
 		end
-		classes.class[name] = args[2]
+		classes.class[name] = param
 		classes:save()
 		local player = minetest.env:get_player_by_name(name)
 		classes:update_character_mesh(player)
-		return true
-	end
-end)
+	end,
+})
 
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
