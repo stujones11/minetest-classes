@@ -39,7 +39,7 @@ classes.get_character_mesh = function(self, name)
 	local mesh = ""
 	local mod_path = minetest.get_modpath("3d_armor")	
 	if mod_path then
-		mesh = "3d_armor_"
+		--mesh = "3d_armor_"
 	end
 	if classes.class[name] then
 		return mesh..classes.mesh[classes.class[name]]
