@@ -2,8 +2,12 @@ Classes - Player Classes
 ========================
 
 Playable character classes, currently including human, dwarf and elf.
-Does nothing much besides altering the visual appearance of the character model.
-Different classes have no special abilities as yet.
+Besides altering the visual appearance of the character model, classes
+now effect the player physics and base armor level.
+
+Dwarf is the toughest but moves more slowly.
+Elf is the quickest but is more susceptible to damage.
+Human is currently unchanged.
 
 To change class issue the chat command: /class human | dwarf | elf
 
