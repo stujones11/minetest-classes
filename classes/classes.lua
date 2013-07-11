@@ -38,7 +38,6 @@ classes.update_player_visuals = function(self, player)
 	})
 	if not has_skin_changer then
 		player:set_properties({textures={texture}})
-		print("oops")
 --[[
 		if has_3d_armor	then
 			uniskins:update_player_visuals(player)
