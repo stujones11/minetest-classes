@@ -9,11 +9,11 @@ local has_3d_armor = minetest.get_modpath("3d_armor")
 classes = {
 	class = {},
 	properties = {},
-	filename = minetest.get_worldpath().."/classes.mt"
+	filename = minetest.get_worldpath().."/classes.mt",
 }
 
-classes.register_class = function(self, name, properties)
-	self.properties[name] = properties
+classes.register_class = function(self, class, properties)
+	self.properties[class] = properties
 end
 
 classes.update_player_visuals = function(self, player)
@@ -22,18 +22,19 @@ classes.update_player_visuals = function(self, player)
 	end
 	local name = player:get_player_name()
 	local class = classes.class[name]
+	local properties = classes.properties[class]
 	local mesh = ""
-	local texture = classes.properties[class].texture
+	local texture = properties.texture
 --[[
 	if has_3d_armor	then
 		mesh = "3d_armor_"
 	end
 --]]
-	mesh = mesh..classes.properties[class].mesh
+	mesh = mesh..properties.mesh
 	player:set_properties({
 		visual = "mesh",
 		mesh = mesh,
-		collisionbox = classes.properties[class].collisionbox,
+		collisionbox = properties.collisionbox,
 		visual_size = {x=1, y=1},
 	})
 	if not has_skin_changer then
@@ -44,9 +45,9 @@ classes.update_player_visuals = function(self, player)
 		end
 ]]--
 	end 
-	local physics = classes.properties[class].physics
+	local physics = properties.physics
 	player:set_physics_override(physics.speed, physics.jump, physics.gravity)
-	player:set_armor_groups(classes.properties[class].armor_groups)
+	player:set_armor_groups(properties.armor_groups)
 end
 
 classes.load = function(self)
@@ -116,5 +117,4 @@ minetest.register_on_joinplayer(function(player)
 		classes:update_player_visuals(player)
 	end, player)
 end)
-
 
